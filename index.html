@@ -44,7 +44,7 @@
         <h1 class="text-5xl font-extrabold text-purple-700 mb-4 tracking-tight">
             Taylor Swift Discography
         </h1>
-        <p class="text-xl text-gray-600">Explore her albums and song lyrics.</p>
+        <p class="text-xl text-gray-600">Explore her albums and discover song lyrics.</p>
     </header>
 
     <main id="app-container" class="w-full max-w-4xl bg-white p-8 rounded-xl shadow-lg">
@@ -200,9 +200,9 @@
                     albumFolderName = `${album.order} ${cleanedAlbumName}`;
                 }
 
-                // Construct the song file name: e.g., "1. Tim McGraw.txt"
-                // Use the songKey directly and the exact songName from JSON
-                const songFileName = `${songKey}. ${songName}.txt`;
+                // Construct the song file name: e.g., "7.txt"
+                // Solely rely on the songKey and the .txt extension.
+                const songFileName = `${songKey}.txt`;
 
                 const lyricsFilePath = `data/Lyrics/${albumFolderName}/${songFileName}`;
 
@@ -216,7 +216,7 @@
                 lyricsContentDiv.innerHTML = lyrics;
 
             } catch (error) {
-                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed and named (e.g., 'data/Lyrics/3 Speak Now/1. Mine.txt' or 'data/Lyrics/11 TTPD/1. Fortnight.txt').</p>`;
+                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed and named (e.g., 'data/Lyrics/6 Reputation/7.txt' or 'data/Lyrics/11 TTPD/1.txt').</p>`;
                 console.error("Error fetching lyrics file:", error);
             }
         }
