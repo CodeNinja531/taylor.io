@@ -185,16 +185,20 @@
             const lyricsContentDiv = document.getElementById('lyrics-content');
 
             try {
-                // Construct the album folder name: e.g., "3 Speak Now"
-                // 1. Remove "(Taylor's Version)" explicitly if present
-                // 2. Remove other problematic characters for file paths, but preserve spaces
-                const cleanedAlbumName = album.album
-                    .replace(/\(Taylor's Version\)/g, '')
-                    .replace(/[^a-zA-Z0-9\s]/g, '') // Keep alphanumeric and spaces
-                    .replace(/\s{2,}/g, ' ') // Replace multiple spaces with a single space
-                    .trim(); // Trim leading/trailing spaces
-
-                const albumFolderName = `${album.order} ${cleanedAlbumName}`;
+                let albumFolderName;
+                if (album.order === "11") {
+                    albumFolderName = "11 TTPD"; // Specific case for The Tortured Poets Department
+                } else {
+                    // Construct the album folder name: e.g., "3 Speak Now"
+                    // 1. Remove "(Taylor's Version)" explicitly if present
+                    // 2. Remove other problematic characters for file paths, but preserve spaces
+                    const cleanedAlbumName = album.album
+                        .replace(/\(Taylor's Version\)/g, '')
+                        .replace(/[^a-zA-Z0-9\s]/g, '') // Keep alphanumeric and spaces
+                        .replace(/\s{2,}/g, ' ') // Replace multiple spaces with a single space
+                        .trim(); // Trim leading/trailing spaces
+                    albumFolderName = `${album.order} ${cleanedAlbumName}`;
+                }
 
                 // Construct the song file name: e.g., "1. Tim McGraw.txt"
                 // Use the songKey directly and the exact songName from JSON
@@ -212,7 +216,7 @@
                 lyricsContentDiv.innerHTML = lyrics;
 
             } catch (error) {
-                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed and named (e.g., 'data/Lyrics/3 Speak Now/1. Mine.txt').</p>`;
+                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed and named (e.g., 'data/Lyrics/3 Speak Now/1. Mine.txt' or 'data/Lyrics/11 TTPD/1. Fortnight.txt').</p>`;
                 console.error("Error fetching lyrics file:", error);
             }
         }
