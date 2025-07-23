@@ -186,12 +186,14 @@
 
             try {
                 let albumFolderName;
-                if (album.order === "11") {
-                    albumFolderName = "11 TTPD"; // Specific case for The Tortured Poets Department
+                if (album.order === "1") {
+                    // Special case for "Taylor Swift" album folder
+                    albumFolderName = "1 TaylorSwift";
+                } else if (album.order === "11") {
+                    // Special case for "The Tortured Poets Department" album folder
+                    albumFolderName = "11 TTPD";
                 } else {
-                    // Construct the album folder name: e.g., "3 Speak Now"
-                    // 1. Remove "(Taylor's Version)" explicitly if present
-                    // 2. Remove other problematic characters for file paths, but preserve spaces
+                    // Default cleaning for other album folders: preserve spaces, remove other special chars
                     const cleanedAlbumName = album.album
                         .replace(/\(Taylor's Version\)/g, '')
                         .replace(/[^a-zA-Z0-9\s]/g, '') // Keep alphanumeric and spaces
@@ -216,7 +218,7 @@
                 lyricsContentDiv.innerHTML = lyrics;
 
             } catch (error) {
-                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed and named (e.g., 'data/Lyrics/6 Reputation/7.txt' or 'data/Lyrics/11 TTPD/1.txt').</p>`;
+                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed and named (e.g., 'data/Lyrics/1 TaylorSwift/1.txt', 'data/Lyrics/6 Reputation/7.txt', or 'data/Lyrics/11 TTPD/1.txt').</p>`;
                 console.error("Error fetching lyrics file:", error);
             }
         }
