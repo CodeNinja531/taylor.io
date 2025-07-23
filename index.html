@@ -82,7 +82,7 @@
                     ${albumsData.map(album => `
                         <div class="album-card bg-white rounded-lg shadow-md overflow-hidden cursor-pointer border border-gray-200"
                              data-album-order="${album.order}">
-                            <img src="data/covers/${album.order}.jpg" alt="${album.album} Album Cover"
+                            <img src="data/Covers/${album.order}.jpg" alt="${album.album} Album Cover"
                                  class="w-full h-48 object-cover object-center rounded-t-lg"
                                  onerror="this.onerror=null;this.src='https://placehold.co/300x300/e0e0e0/555555?text=No+Cover';">
                             <div class="p-4">
@@ -185,9 +185,15 @@
             const lyricsContentDiv = document.getElementById('lyrics-content');
 
             try {
-                // Construct the album folder name: e.g., "1 TaylorSwift"
-                // Remove all spaces and non-alphanumeric characters from the album name
-                const cleanedAlbumName = album.album.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
+                // Construct the album folder name: e.g., "3 Speak Now"
+                // 1. Remove "(Taylor's Version)" explicitly if present
+                // 2. Remove other problematic characters for file paths, but preserve spaces
+                const cleanedAlbumName = album.album
+                    .replace(/\(Taylor's Version\)/g, '')
+                    .replace(/[^a-zA-Z0-9\s]/g, '') // Keep alphanumeric and spaces
+                    .replace(/\s{2,}/g, ' ') // Replace multiple spaces with a single space
+                    .trim(); // Trim leading/trailing spaces
+
                 const albumFolderName = `${album.order} ${cleanedAlbumName}`;
 
                 // Construct the song file name: e.g., "1. Tim McGraw.txt"
@@ -206,7 +212,7 @@
                 lyricsContentDiv.innerHTML = lyrics;
 
             } catch (error) {
-                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed in the 'data/Lyrics' directory and named according to the format (e.g., '1 TaylorSwift/1. Tim McGraw.txt').</p>`;
+                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed and named (e.g., 'data/Lyrics/3 Speak Now/1. Mine.txt').</p>`;
                 console.error("Error fetching lyrics file:", error);
             }
         }
