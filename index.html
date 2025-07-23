@@ -185,24 +185,28 @@
             const lyricsContentDiv = document.getElementById('lyrics-content');
 
             try {
-                // Construct the file path for the lyrics
-                // Normalize album name for file path (remove special characters, replace spaces with hyphens)
-                const albumFolderName = `${album.order} ${album.album.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, ' ').trim()}`;
-                // Normalize song name for file path
-                const songFileName = `${songKey}. ${songName.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, ' ').trim()}.txt`;
+                // Construct the album folder name: e.g., "1 TaylorSwift"
+                // Remove all spaces and non-alphanumeric characters from the album name
+                const cleanedAlbumName = album.album.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
+                const albumFolderName = `${album.order} ${cleanedAlbumName}`;
+
+                // Construct the song file name: e.g., "1. Tim McGraw.txt"
+                // Use the songKey directly and the exact songName from JSON
+                const songFileName = `${songKey}. ${songName}.txt`;
+
                 const lyricsFilePath = `data/Lyrics/${albumFolderName}/${songFileName}`;
 
                 const response = await fetch(lyricsFilePath);
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`HTTP error! status: ${response.status} - Could not find file at ${lyricsFilePath}`);
                 }
 
                 const lyrics = await response.text();
                 lyricsContentDiv.innerHTML = lyrics;
 
             } catch (error) {
-                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed in the 'data/Lyrics' directory.</p>`;
+                lyricsContentDiv.innerHTML = `<p class="text-red-500">Error loading lyrics: ${error.message}. Please ensure the lyric files are correctly placed in the 'data/Lyrics' directory and named according to the format (e.g., '1 TaylorSwift/1. Tim McGraw.txt').</p>`;
                 console.error("Error fetching lyrics file:", error);
             }
         }
